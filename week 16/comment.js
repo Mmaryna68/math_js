@@ -1,15 +1,8 @@
 // Функция для очистки поля ввода
-function clearInputField(inputField) {
-  inputField.value = "";
-}
+const clearInputField = (inputField) => (inputField.value = "");
 
 // Функция для проверки на спам
-function checkSpam(str) {
-  const lowerStr = str.toLowerCase();
-  return lowerStr.includes("viagra") || lowerStr.includes("xxx")
-    ? lowerStr.replace(/viagra|xxx/gi, "***")
-    : str;
-}
+const checkSpam = (str) => str.toLowerCase().replace(/viagra|xxx/gi, "***");
 
 // Получаем форму комментариев и все поля ввода
 const commentForm = document.getElementById("comment-form");
@@ -20,19 +13,10 @@ const commentsSection = document.getElementById("comments-section");
 
 // Добавляем обработчик событий на поле ввода имени
 nameInput.addEventListener("blur", (event) => {
-  // Получаем значение поля ввода имени
-  let name = event.target.value.trim();
-
-  // Преобразуем имя пользователя
-  name = name
+  event.target.value = event.target.value
     .toLowerCase()
     .replace(/\s+/g, " ")
-    .replace(/(^|\s)\S/g, function (match) {
-      return match.toUpperCase();
-    });
-
-  // Устанавливаем значение поля ввода имени
-  event.target.value = name;
+    .replace(/(^|\s)\S/g, (match) => match.toUpperCase());
 });
 
 // Добавляем обработчик события на отправку формы
@@ -40,7 +24,7 @@ commentForm.addEventListener("submit", (event) => {
   event.preventDefault(); // Отменяем действие по умолчанию
 
   // Получаем значения полей ввода
-  const name = nameInput.value;
+  const name = nameInput.value.trim();
   const avatar = avatarInput.value.trim();
   const message = messageInput.value.trim();
 
@@ -78,7 +62,5 @@ commentForm.addEventListener("submit", (event) => {
   commentsSection.appendChild(newComment);
 
   // Очищаем поля ввода
-  clearInputField(nameInput);
-  clearInputField(avatarInput);
-  clearInputField(messageInput);
+  [nameInput, avatarInput, messageInput].forEach(clearInputField);
 });
